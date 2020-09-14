@@ -1,0 +1,39 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "3de51898-acfc-493a-a4df-0b370b87fea7",
+    "name": "querqy-upload-es-ruleset",
+    "friendlyName": "Upload Querqy Rulesets to Elasticsearch",
+    "description": "This task extracts contents of the glob files and uploads that content to elastic as ruleset",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Estefan Antelo Doval",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 17
+    },
+    "instanceNameFormat": "Uploading $(rulesetName) Ruleset to Elasticsearch",
+    "inputs": [
+        {
+            "name": "fileGlob",
+            "type": "string",
+            "label": "File(s) Glob Pattern(s)",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Use one or multiple glob patterns, by separating them with a comma. e.g.`\"**/*-100.ruleset, **/.ruleset/*\"`"
+        },
+        {
+            "name": "serviceEndpoint",
+            "type": "connectedService:Generic",
+            "label": "Service Connection",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The service connection with the credentials for the server authentication. Use the Generic service connection type for the service connection."
+        }
+    ],
+    "execution": {
+        "Node10": {
+            "target": "index.js"
+        }
+    }
+}

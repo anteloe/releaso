@@ -1,0 +1,20 @@
+{
+  "name": "releaso",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd .. && tsc && tfx extension create --manifest-globs vss-extension.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "azure-pipelines-task-lib": "^2.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.6.3",
+    "@types/q": "^1.5.4"
+  }
+}
