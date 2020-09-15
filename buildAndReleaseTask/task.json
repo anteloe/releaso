@@ -10,17 +10,32 @@
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 22
+        "Patch": 26
     },
-    "instanceNameFormat": "Uploading $(rulesetName) Ruleset to Elasticsearch",
+    "instanceNameFormat": "Uploading Rulesets to Elasticsearch",
     "inputs": [
         {
             "name": "fileGlob",
             "type": "string",
             "label": "File(s) Glob Pattern(s)",
-            "defaultValue": "",
+            "defaultValue": "**/*.ruleset",
             "required": false,
             "helpMarkDown": "Use one or multiple glob patterns, by separating them with a comma. e.g.`\"**/*-100.ruleset, **/.ruleset/*\"`"
+        },
+        {
+            "name": "httpVerb",
+            "type": "pickList",
+            "label": "HTTP Verb",
+            "required": true,
+            "properties": {
+                "EditableOptions": "False",
+                "isReadOnly": true
+            },
+            "defaultValue": "POST",
+            "options": {
+                "POST": "POST",
+                "PUT": "PUT"
+            }
         },
         {
             "name": "serviceEndpoint",

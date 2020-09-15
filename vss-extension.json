@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "querqy-rulease-task",
   "name": "Querqy Upload Rulesets to Elastic",
-  "version": "0.0.22",
+  "version": "0.0.26",
   "publisher": "anteloe",
   "targets": [
       {
@@ -14,7 +14,7 @@
       "Azure Pipelines"
   ],
   "icons": {
-      "default": "images/extension-icon.png"        
+      "default": "images/icon.png"        
   },
   "files": [
       {

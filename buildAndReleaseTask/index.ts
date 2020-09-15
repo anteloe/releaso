@@ -6,7 +6,7 @@ const toolingProxyEndpoint = "/api/querqy";
 
 async function run() {
   try {
-    const { fileGlobs, endpoint: {url, username, password} } = getInputData();
+    const { fileGlobs, endpoint: { httpVerb = "POST", url, username, password} } = getInputData();
     const endpointUrl = url + toolingProxyEndpoint
 
     const filePaths = tl.findMatch(process.cwd(), fileGlobs);
@@ -26,7 +26,7 @@ async function run() {
         .arg("--location")      // handle redirects
         .arg("--silent")        // do not show progress
         .arg("--show-error")    // show errors
-        .arg("--request").arg("PUT").arg(endpointUrl)
+        .arg("--request").arg(httpVerb).arg(endpointUrl)
         .arg("--header").arg('Content-Type: text/plain')
         .arg('--header').arg(`Authorization: Basic ${auth}`)
         .arg("--header").arg(`X-Filename: ${fileName}`)
@@ -51,6 +51,7 @@ async function run() {
 function getInputData() {
   const fileGlobs: string[] = tl.getDelimitedInput("fileGlob", ",", true);
   const serviceEndpointId: string = tl.getInput("serviceEndpoint", true)!;
+  const httpVerb: string = tl.getInput("httpVerb", true)!;
 
   // get service endpoint information
   const endpointUrl = tl.getEndpointUrl(serviceEndpointId, false);
@@ -62,6 +63,7 @@ function getInputData() {
   return {
     fileGlobs,
     endpoint: {
+      httpVerb,
       url: endpointUrl,
       username: username,
       password: password,
