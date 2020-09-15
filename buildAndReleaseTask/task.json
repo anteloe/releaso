@@ -9,8 +9,8 @@
     "author": "Estefan Antelo Doval",
     "version": {
         "Major": 0,
-        "Minor": 1,
-        "Patch": 26
+        "Minor": 2,
+        "Patch": 0
     },
     "instanceNameFormat": "Uploading Rulesets to Elasticsearch",
     "inputs": [
@@ -19,7 +19,7 @@
             "type": "string",
             "label": "File(s) Glob Pattern(s)",
             "defaultValue": "**/*.ruleset",
-            "required": false,
+            "required": true,
             "helpMarkDown": "Use one or multiple glob patterns, by separating them with a comma. e.g.`\"**/*-100.ruleset, **/.ruleset/*\"`"
         },
         {
@@ -41,8 +41,7 @@
             "name": "serviceEndpoint",
             "type": "connectedService:Generic",
             "label": "Service Connection",
-            "defaultValue": "",
-            "required": false,
+            "required": true,
             "helpMarkDown": "The service connection with the credentials for the server authentication. Use the Generic service connection type for the service connection."
         }
     ],

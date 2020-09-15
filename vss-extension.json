@@ -1,15 +1,15 @@
 {
   "manifestVersion": 1,
   "id": "querqy-rulease-task",
-  "name": "Querqy Upload Rulesets to Elastic",
-  "version": "0.0.26",
+  "name": "Upload Querqy Rulesets to Elastic",
+  "version": "0.2.0",
   "publisher": "anteloe",
   "targets": [
       {
           "id": "Microsoft.VisualStudio.Services"
       }
   ],    
-  "description": "Test extesnsion. Not functional yet.",
+  "description": "Select files with glob patterns and upload its content to a Service. For each selected file a request is made. The file contents are transmitted via POST/PUT Request in its body. The origin filename is transmitted with a custom Header 'X-Filename'",
   "categories": [
       "Azure Pipelines"
   ],
