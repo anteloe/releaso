@@ -1,43 +1,56 @@
 import tl = require("azure-pipelines-task-lib/task");
-import { readFileAsync } from "./helpers/asyncReadFile";
+import path = require("path");
 import { ToolRunner } from "azure-pipelines-task-lib/toolrunner";
+
+const toolingProxyEndpoint = "/api/querqy";
 
 async function run() {
   try {
-    const { fileGlobs, endpoint } = getInputData();
-    const curl = getCurlRunner();
-
-    console.log("serviceEndpoint", endpoint.url);
-    console.log("username", `username:${endpoint.username}`);
-    console.log("username", `username:${endpoint.password}`);
-    console.log("fileGlobs", fileGlobs.join(","));
+    const { fileGlobs, endpoint: {url, username, password} } = getInputData();
+    const endpointUrl = url + toolingProxyEndpoint
 
     const filePaths = tl.findMatch(process.cwd(), fileGlobs);
+    console.log("uploading files:\n", filePaths.map(p => "- " + path.basename(p)).join("\n"));
 
-    filePaths.forEach(uploadRuleset);
+    // base64(username:password)
+    const usernamePassword = username + ":" + password
+    const authBuffer = Buffer.alloc(usernamePassword.length, usernamePassword, 'utf-8')
+    const auth = authBuffer.toString('base64')
 
-    // ["**/*.ruleset"].forEach((glob: string) => {
-    //   // curl --location --request POST $search_api \
-    //   // --header 'Content-Type: text/plain' \
-    //   // --data-raw "$content"
+    const uploads = filePaths.map(async (filePath) => {
+      const fileName = path.basename(filePath);
+      const curl = getCurlRunner();
 
-    //   // prettier-ignore
-    //   curl
-    //   .arg("--location")
-    //   .arg("--request").arg("PUT").arg('{url}')
-    //   .arg("--header").arg('Content-Type: text/plain')
-    //   .arg('--data-raw').arg('{data}')
-    // });
+      // prettier-ignore
+      curl
+        .arg("--location")      // handle redirects
+        .arg("--silent")        // do not show progress
+        .arg("--show-error")    // show errors
+        .arg("--request").arg("PUT").arg(endpointUrl)
+        .arg("--header").arg('Content-Type: text/plain')
+        .arg('--header').arg(`Authorization: Basic ${auth}`)
+        .arg("--header").arg(`X-Filename: ${fileName}`)
+        .arg('--data').arg(`@${filePath}`);
+
+      const code = await curl.exec();
+      
+      // log error if something went wrong
+      if(code !== 0){
+        console.error('error uploading ' + fileName)
+      }
+      return code;
+    });
+
+    // await all requests
+    const codes = await Promise.all(uploads);
+
+    // throw an error if a request went wrong.
+    if(codes.find(code => code !== 0) != null){
+      throw new Error('error uploading ruleset(s)')
+    }
   } catch (err) {
     tl.setResult(tl.TaskResult.Failed, err.message);
   }
-}
-
-async function uploadRuleset(filePath: string) {
-  const content = await readFileAsync(filePath)
-
-  console.log('file-path', filePath)
-  console.log('file-content', content)
 }
 
 /** just gather and parse input data for this task */
