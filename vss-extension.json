@@ -9,7 +9,7 @@
           "id": "Microsoft.VisualStudio.Services"
       }
   ],    
-  "description": "Select files with glob patterns and upload its content to a Service. For each selected file a request is made. The file contents are transmitted via POST/PUT Request in its body. The origin filename is transmitted with a custom Header 'X-Filename'",
+  "description": "Select files with glob patterns and upload its content to a Service.",
   "categories": [
       "Azure Pipelines"
   ],
