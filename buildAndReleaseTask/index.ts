@@ -39,7 +39,7 @@ async function run() {
     const codes = await Promise.all(uploads);
 
     // throw an error if a request went wrong.
-    if(codes.find(code => code !== 0) != null){
+    if(codes.find(code => code !== 0) !== null){
       throw new Error('error uploading ruleset(s)')
     }
   } catch (err) {
