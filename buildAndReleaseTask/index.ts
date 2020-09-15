@@ -32,13 +32,7 @@ async function run() {
         .arg("--header").arg(`X-Filename: ${fileName}`)
         .arg('--data').arg(`@${filePath}`);
 
-      const code = await curl.exec();
-      
-      // log error if something went wrong
-      if(code !== 0){
-        console.error('error uploading ' + fileName)
-      }
-      return code;
+      return await curl.exec();
     });
 
     // await all requests
